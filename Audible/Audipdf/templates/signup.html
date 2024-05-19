@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audible | Signup</title>
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="design">
+            <div class="logo">
+                <h1>Audible</h1>
+                <h3>Convert All Your PDF Files Into Audio Files</h3>
+                <p>Our project converts pdf files to audio file so that our users can listen to their pdfs just by clicking on a play button for each</p>
+
+            </div>
+        </div>
+        <div class="fill-form">
+            <form action="" method="post">
+                {% csrf_token %}
+                <h3>Create Account Today</h3>
+                <label for="username">Full Name :</label>
+                <input type="text" name="username" id="username" required>
+                <label for="email">Email :</label>
+                <input type="email" name="email" id="email" required>
+                <label for="password">Create Password</label required>
+                <input type="password" name="password" id="password">
+                <label for="password2">Confirm</label>
+                <input type="password" name="password2" id="password2" required>
+                <p>
+                    <span >Show password
+                    </span>
+                    <input type="checkbox" name="show password" id="show">
+                </p>
+                {% for message in messages %}                
+                    <h5 style="color: red;margin: 10px 0;">{{message}}</h5>
+                {% endfor %}
+                <p id="terms">
+                    <input type="checkbox" name="terms" id="checkbox" checked>
+                    <span>I agree with terms and conditions as well as privacy policy
+                    </span>
+                </p>
+                <button type="submit">Create Account</button>
+                <a href="{% url "login" %}">Already have an account?</a>
+            </form>
+        </div>
+    </div>
+    
+</body>
+</html>

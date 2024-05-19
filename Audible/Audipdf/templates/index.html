@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convert pdf to an audio file</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <h1>AUDIBLE</h1>
+        </div>
+        <div class="user" onclick="openAccount()">
+            <img src="{% static 'images/IMG-20240319-WA0004.png' %}" alt="User profile image">
+        </div>
+
+    </nav>
+    <div class="container">
+        <div class="interface">
+            <div class="browse-files">
+                <h3>Your Uploads</h3>
+                <div class="search">
+                    <input type="text" name="search" id="search" placeholder="Search file">
+                    <button type="submit" onclick="Search()"><i class="fa fa-search"></i></button>
+                </div>
+                <ul>
+                    {% if files %}
+                    
+                        {% for file in files %}
+                            <li id="pdf-list"><a href="{% url "preview" file.id%}" id="item">{{file.title}} </a></li>
+                        {% endfor %}
+                    {% else %}
+                        <h4>No file uploaded</h4>
+                    {% endif %}
+                </ul>
+                <li id="upload" ><a href="{% url "upload" %}"><i class="fa fa-plus"></i></a></li>
+            </div>
+            <div class="display">
+                <div class="heading">
+                    <h3>{{pdf_instance.title}}</h3>
+                </div>
+                <div class="file-content">
+                    {% if extracted_text %}
+                        {% for text in extracted_text %}
+                        <div class="page">
+                            <div class="text">{{ text|truncatewords:70|wordwrap:100|urlize|safe }}</div>
+                            <div class="speak">
+                                <button class="speak-button" onclick="speak('{{text | escapejs}}')">
+                                    <i class="fa fa-play"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <h3>Could not extract text from the PDF</h3>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="Account">
+            <div class="account-info">
+                <div class="user-account">
+                    <div class="user-account-image">
+                        <img src="{% static 'images/IMG-20240319-WA0004.png' %}" alt="Account image">
+    
+                    </div>
+                    <span>{{user.email}}</span>
+                </div>
+                <ul>
+                    <li onclick="openSetting()">Settings</li>
+                    <li>Review</li>
+                    <li>User Guide</li>
+                    <li>Privacy Policy</li>
+                    <li>Contact Us</li>
+                    <li style="color: red;"><a href="{% url "logout" %}" style="width: 100%;height: 100%;text-decoration: none;display: flex;color: red;align-items: center;">Log out</a></li>
+                </ul>
+            </div>
+            <div class="close" onclick="closeAccount()">
+                <h2>&times;</h2>
+            </div>
+        </div>
+        
+        <div class="Settings">
+            <div class="setting">
+                <h3>Settings</h3>
+                <div class="settings-items">
+                    <label for="rate">Speech Rate</label>
+                    <input type="range" name="rate" id="rate">
+                    <p>
+                        <label for="darkmode">Enable dark mode</label>
+                        <input type="checkbox" name="darkmode" id="darkmode">
+                    </p>
+                    <p><button type="submit">Save Changes</button></p>
+                </div>
+                <div class="settings-close" onclick="closeSetting()">
+                    <h2>&times;</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

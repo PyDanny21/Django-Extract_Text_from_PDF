@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audible | Login</title>
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="design">
+            <div class="logo">
+                <h1>Audible</h1>
+                <h3>Convert All Your PDF Files Into Audio Files</h3>
+                <p>Our project converts pdf files to audio file so that our users can listen to their pdfs just by clicking on a play button for each</p>
+
+            </div>
+        </div>
+        <div class="fill-form">
+            <form action="" method="post">
+                {% csrf_token %}
+                <h3>Welcome Back!</h3>
+                <label for="username">Username :</label>
+                <input type="text" name="username" id="username" required>
+                <label for="password">Password</label required>
+                <input type="password" name="password" id="password">
+                <p>
+                    <span >Show password
+                    </span>
+                    <input type="checkbox" name="terms" id="checkbox" checked>
+                </p>
+                {% for message in messages %}                
+                    <h5 style="color: red;margin: 10px 0;">{{message}}</h5>
+                {% endfor %}
+
+                <button type="submit">Log In</button>
+                <a href="{% url "signup" %}">Create account?</a>
+
+            </form>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
