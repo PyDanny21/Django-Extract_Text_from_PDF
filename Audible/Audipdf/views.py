@@ -6,6 +6,27 @@ from django.contrib.auth.decorators import login_required
 from .forms import PDFUploadForm
 from PyPDF2 import PdfReader
 from .utils import clean_text
+#to activate account
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_decode,urlsafe_base64_encode
+from django.urls import NoReverseMatch,reverse
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+#email
+from django.core.mail import send_mail,EmailMultiAlternatives
+from django.core.mail import BadHeaderError,send_mail
+from django.core import mail
+from django.conf import settings
+import threading
+# geting tokens
+from .utils import TokenGenerator,generateToken
+
+@login_required(login_url='login')
+def index(request):
+        # cleaned_text = [clean_text(text) for text in extracted_text]
+        files=PDFFile.objects.all()
+        return render(request, 'index.html', {'files':files})
+
 
 def extract_text_from_pdf(pdf_file_path):
     with open(pdf_file_path, 'rb') as file:
@@ -16,14 +37,16 @@ def extract_text_from_pdf(pdf_file_path):
             if page_text == '':
                 pass
             else:
-                text_per_page.append(page_text)
+                text=page_text.replace('\n','')
+                text_per_page.append(text)
         return text_per_page
 
 def upload(request):
     if request.method == 'POST':
         form = PDFUploadForm(request.POST, request.FILES)
         if form.is_valid():
-            if PDFFile.objects.filter(pdf_file=form.files).exists():
+            pdf_file=request.FILES['pdf_file']
+            if PDFFile.objects.filter(pdf_file=pdf_file).exists():
                 messages.info('PDF file exist')
                 form = PDFUploadForm()
                 return render(request, 'upload.html', {'form': form})
@@ -86,7 +109,21 @@ def signup(request):
             
             else:
                 user=User.objects.create_user(username=username,email=email,password=password)
+                user.is_active=False
                 user.save()
+                current_site=get_current_site(request)
+                email_subject='Activate your account'
+                message=render_to_string('activate.html',{
+                    'user':user,
+                    'domain':'127.0.0.1:8000',
+                    'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                    'token':generateToken.make_token(user)
+                })
+
+                email_message=EmailMessage(email_subject,message.settings.EMAIL_HOST_USER,[email],)
+                EmailThread(email_message).start()
+
+                messages.info(request, 'Activate link sent to your email')
                 return redirect('login')
         else:
             messages.info(request,'Passwords not matching')

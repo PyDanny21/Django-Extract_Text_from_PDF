@@ -49,7 +49,7 @@ nav{
     position: relative;
 }
 .interface{
-    padding: 50px;
+    padding: 30px;
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -108,7 +108,7 @@ nav{
 li#upload {
     width: 50px;
     height: 50px;
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     right: 20px;
     border-radius: 50%;
@@ -130,7 +130,7 @@ li#upload a{
     justify-content: center;
 }
 li#upload a i{
-    font-size: larger;
+    font-size: 20px;
 }
 
 .search{
@@ -167,10 +167,11 @@ li#upload a i{
     width: 100%;
     height: 570px;
     /* padding: 20px; */
-    background: #fff;
     border-radius:5px;
     overflow: hidden;
+    background: #fff;
 }
+
 .display .heading{
     width: 100%;
     height: 50px;
@@ -181,13 +182,36 @@ li#upload a i{
     padding-left: 10px;
     margin-bottom: 10px;
 }
+.heading h3{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+#back,#forward{
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#back:hover, #forward:hover{
+    background: rgba(211, 211, 211,0.2);
+}
+
 .file-content{
     width: 98%;
     height: 500px;
+    margin: auto;
+    border-radius: 5px;
     padding: 20px;
     overflow-y: scroll;
     scrollbar-width: thin;
     scroll-behavior: smooth;
+    background: url('/static/images/background.jpg');
 }
 
 .page{
@@ -195,22 +219,32 @@ li#upload a i{
     height: fit-content;
     display: flex;
     margin: 15px 0;
-    background: lightgray;
+    background: #fff;
     border-radius: 5px;
     padding: 15px;
+    font-weight: 500;
+    position: relative;
+    min-height: 90px;
+    min-width: 200px;
 }
 .text{
-    width: 90%;
+    width: 100%;
     height: fit-content;
-    margin-right: 10px;
+    margin-right:5px;
 }
-.speak{
+.speak {
     width: 50px;
+    min-width: 50px;
     height: 50px;
     background-color: blue;
     border-radius: 50%;
     padding: 2px;
+    margin: auto;
+    /* position: absolute;
+    top: 20%;
+    right: 10px; */
 }
+
 .speak button{
     width: 100%;
     height: 100%;
@@ -372,4 +406,50 @@ li#upload a i{
     outline: none;
     margin-top: 20px;
     cursor: pointer;
+}
+
+@media screen and (max-width:700px) {
+    .browse-files{
+        display: none;
+        flex-basis: 100%;
+        border-radius: 0;
+        height: 100%;
+    }
+    .interface{
+        padding: 0;
+    }
+    .display {
+        flex-basis: 100%;
+        width: 100%;
+        height: 100%;
+        /* padding: 20px; */
+        background: #fff;
+        border-radius: 0px;
+        overflow: hidden;
+        display: block;
+    }
+    .file-content {
+        width: 98%;
+        height: 100%;
+        padding: 10px;
+        padding-bottom: 50px;
+    }
+    .display .heading {
+        margin-bottom: 0px;
+        z-index: 999;
+        height: 60px;
+        background: #fff;
+        color: #333;
+    }
+
+    .page {
+        padding: 10px;
+    }
+    .Account {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
 }
